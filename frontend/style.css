@@ -1,0 +1,76 @@
+/* GENERAL */
+
+* {
+    overflow: hidden;
+    margin: 0; 
+}
+
+body {
+    text-align: center;
+}
+
+canvas {
+
+    width: 500px;
+    height: 500px;
+    cursor: crosshair;
+    border: 1px solid black;
+    image-rendering: pixelated;
+}
+
+button {
+
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* CLASS */
+
+.title {
+    height: 15vh;
+}
+
+.container {
+
+    display: flex;
+    align-items: center;
+    height: 80vh;
+}
+
+.container-canvas {
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container-button {
+
+    width: 505px;
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.item {
+    flex: 1;
+}
+
+/* ID */
+
+#reset-canvas-button {
+
+    background-color: #DF2E38;
+}
+
+#download-button {
+
+    background-color: #5D9C59;
+}
