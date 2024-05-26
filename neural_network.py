@@ -33,10 +33,6 @@ def load_data(path :str) -> tuple[np.array,np.array]:
 
 def main():
     
-    # - manage args -
-    
-    # ...
-    
     # - read images -
     
     data, label = load_data("assets/numbers")
