@@ -36,7 +36,7 @@ async def process_canvas(request: Request):
     if not pixels or not width or not height:
         return JSONResponse(content={"message": "Invalid data received"}, status_code=400)
     
-    grayscale_array = np.array(pixels, dtype=np.uint8).reshape((height, width))
+    grayscale_array = np.array(pixels, dtype=np.uint8).reshape((height, width)) / 255
     
     # - make prediction -    
     
@@ -44,7 +44,7 @@ async def process_canvas(request: Request):
         input_data = np.expand_dims(grayscale_array, axis=0)
         prediction = model.predict(input_data).tolist()
     
-        return JSONResponse(content={"message": "Pixel data received", "prediction": prediction})
+        return JSONResponse(content={"message": "Pixel data received", "prediction": prediction, "number": np.argmax(prediction).tolist()})
     
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)

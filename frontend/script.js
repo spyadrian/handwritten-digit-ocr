@@ -7,7 +7,6 @@ window.addEventListener("load", () => {
     document.addEventListener("mousedown", startPainting);
 
     document.getElementById("download-button").addEventListener("click", downloadImage);
-    document.getElementById("send-canvas-button").addEventListener("click", sendCanvas);
     document.getElementById("reset-canvas-button").addEventListener("click", resetCanvas);
 
     resetCanvas();
@@ -17,6 +16,8 @@ window.addEventListener("load", () => {
 
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
+
+let progress = document.querySelectorAll(".container-progress progress");
 
 let coord = { x: 0, y: 0 };
 let paint = false;
@@ -29,13 +30,27 @@ function getPosition(event) {
     coord.y = (event.clientY - canvas.offsetTop) / 25;
 }
 
+function isOnCanvas(event) {
+    return (
+        event.clientX >= canvas.offsetLeft &&
+        event.clientX < canvas.offsetLeft + canvas.clientWidth &&
+        event.clientY >= canvas.offsetTop &&
+        event.clientY < canvas.offsetTop + canvas.clientHeight
+    );
+}
+
 function startPainting(event) {
-    paint = true;
-    getPosition(event);
+    if (isOnCanvas(event)) {
+        paint = true;
+        getPosition(event);
+    }
 }
 
 function stopPainting() {
-    paint = false;
+    if (paint) {
+        paint = false;
+        sendCanvas();
+    }
 }
 
 function sketch(event) {
@@ -67,6 +82,7 @@ function downloadImage() {
 function resetCanvas() {
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    updateProgress([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 }
 
 async function sendCanvas() {
@@ -100,9 +116,22 @@ async function sendCanvas() {
         }
 
         const data = await response.json();
-        const prediction = data.prediction;
-        console.log(prediction);
+        const prediction = data.prediction[0];
+        const number = data.number;
+
+        updateProgress(prediction, number);
     } catch (error) {
         console.error("There was a problem :", error);
+    }
+}
+
+function updateProgress(prediction, number = -1) {
+    for (let i = 0; i < progress.length; i++) {
+        progress[i].value = prediction[i];
+        progress[i].style.accentColor = "#DF2E38";
+    }
+
+    if (number != -1) {
+        progress[number].style.accentColor = "#5D9C59";
     }
 }
