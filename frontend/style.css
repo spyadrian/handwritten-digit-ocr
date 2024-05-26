@@ -31,6 +31,13 @@ button {
     text-decoration: none;
 }
 
+progress {
+
+    padding-bottom: 4px;
+    padding-right: 20px;
+    margin-left: 10px;
+}
+
 /* CLASS */
 
 .title {
@@ -48,7 +55,8 @@ button {
     
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: end;
+    padding-right: 25px;
 }
 
 .container-button {
@@ -57,6 +65,15 @@ button {
     padding-top: 10px;
     display: flex;
     justify-content: space-between;
+}
+
+.container-progress {
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    padding-left: 25px;
 }
 
 .item {
