@@ -7,6 +7,7 @@ window.addEventListener("load", () => {
     document.addEventListener("mousedown", startPainting);
 
     document.getElementById("download-button").addEventListener("click", downloadImage);
+    document.getElementById("send-canvas-button").addEventListener("click", sendCanvas);
     document.getElementById("reset-canvas-button").addEventListener("click", resetCanvas);
 
     resetCanvas();
@@ -66,4 +67,42 @@ function downloadImage() {
 function resetCanvas() {
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+async function sendCanvas() {
+    // - get array -
+
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const pixels = Array.from(imageData.data);
+
+    const pixels_gray = [];
+    for (let i = 0; i < pixels.length; i += 4) {
+        pixels_gray.push(pixels[i]);
+    }
+
+    // - send array -
+    try {
+        const response = await fetch("/post-canvas", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+
+            body: JSON.stringify({
+                pixels: Array.from(pixels_gray),
+                width: canvas.width,
+                height: canvas.height,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error("Network error " + response.statusText);
+        }
+
+        const data = await response.json();
+        const prediction = data.prediction;
+        console.log(prediction);
+    } catch (error) {
+        console.error("There was a problem :", error);
+    }
 }
