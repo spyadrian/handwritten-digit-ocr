@@ -13,26 +13,26 @@ app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")
 model = keras.models.load_model('models/model.h5')
 
 def shift_to_top_left(img_bin):
-    """
-    Shift the non-zero pixels of a binary image to the top-left corner.
-    :param img_bin: Binary image (numpy array) with shape (20, 20).
-    :return: Binary image with the number shifted to the top-left corner.
-    """
-    # Find the bounding box of the non-zero regions
+    """Shift the pixels of a binary image to the top-left corner.
+
+    Args:
+        img_bin (np.array): Binary image with shape (20, 20)
+
+    Returns:
+        np.array: Binary image with the number shifted to the top-left corner.
+    """    
+    
+    # - find the bounding box - 
     rows = np.any(img_bin, axis=1)
     cols = np.any(img_bin, axis=0)
     
-    # Get the start and end coordinates of the bounding box
     rmin, rmax = np.where(rows)[0][[0, -1]]
     cmin, cmax = np.where(cols)[0][[0, -1]]
     
-    # Extract the bounding box from the binary image
     cropped = img_bin[rmin:rmax+1, cmin:cmax+1]
     
-    # Create a new binary image with the same shape
+    # - placed the bounding box on the new image -
     shifted_img = np.zeros_like(img_bin)
-    
-    # Place the cropped region in the top-left corner of the new image
     shifted_img[0:cropped.shape[0], 0:cropped.shape[1]] = cropped
     
     return shifted_img

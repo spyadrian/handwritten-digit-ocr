@@ -25,6 +25,8 @@ let i = 0;
 
 // --- FUNCTION ---
 
+// - canvas -
+
 function getPosition(event) {
     coord.x = (event.clientX - canvas.offsetLeft) / 25;
     coord.y = (event.clientY - canvas.offsetTop) / 25;
@@ -74,7 +76,6 @@ function downloadImage() {
     link.download = "canvas-image.jpg";
 
     document.body.appendChild(link);
-
     link.click();
     document.body.removeChild(link);
 }
@@ -124,6 +125,8 @@ async function sendCanvas() {
         console.error("There was a problem :", error);
     }
 }
+
+// - progress -
 
 function updateProgress(prediction, number = -1) {
     for (let i = 0; i < progress.length; i++) {
